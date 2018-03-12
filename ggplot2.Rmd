@@ -56,7 +56,14 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   theme_bw() +
   labs(title = "Relationship between engine size and highway mileage (mpg)", 
        x = "Engine size (liters displaced)",
-       y = "Highway mileage (mpg)") +
-  theme(text = element_text(size = 16))
+       y = "Highway mileage (mpg)")
+```
+
+```{r}
+myplot <- ggplot(mpg, aes(x = fl, fill = class)) +
+  geom_bar(position = "dodge") +
+  theme_bw()
+
+ggsave("example_plot.png", plot = myplot, width = 15, height = 15, units = "cm", device = "png")
 ```
 
