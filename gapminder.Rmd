@@ -35,3 +35,54 @@ nrow(gapminder)
 unique(gapminder[,"country"])
 ```
 
+```{r}
+summary(gapminder)
+```
+
+
+```{r}
+# install.packages("skimr")
+```
+
+```{r}
+library(skimr)
+```
+
+```{r}
+skim(gapminder)
+```
+
+```{r}
+dplyr::filter(gapminder, country == "Switzerland")
+```
+
+```{r}
+dplyr::filter(gapminder, country == "Afghanistan")
+```
+
+```{r}
+dplyr::select(gapminder, country, year, pop)
+```
+
+```{r}
+gapminder_no_cont <- dplyr::select(gapminder, -continent)
+dplyr::filter(gapminder_no_cont, year == 2007)
+```
+
+##Pipe.
+Applies part after pipe to the selection before the pipe
+
+```{r}
+select(gapminder, -continent) %>% 
+  filter(year == 2007)
+```
+
+##Mutate
+uses data in one column to make calculations and add a new column with the results. Ex: "gdp" is new column calculated from gdpPercap multiplied by population. Also can sort this using arrange()
+
+```{r}
+gapminder %>%
+  mutate(gdp = gdpPercap * pop) %>%
+  arrange(desc(gdp))
+```
+
