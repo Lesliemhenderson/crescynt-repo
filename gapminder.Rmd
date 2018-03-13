@@ -86,3 +86,99 @@ gapminder %>%
   arrange(desc(gdp))
 ```
 
+##Groupby
+
+to use a subset of the data. good to ungroup at the end
+
+```{r}
+gapminder %>%
+  group_by(country) %>%
+  mutate(gdp = gdpPercap * pop, max_gdp = mad(gdp)) %>%
+  ungroup()
+```
+
+#Combining groub_by and summarize
+
+```{r}
+gapminder %>%
+  group_by(country) %>%
+  mutate(gdp = pop * gdpPercap) %>%
+  summarise(max_gdp = max(gdp))
+```
+
+#Joining Datasets
+how to combine two datasets  
+multiple ways, left_join, right_join, inner_join, full_join   
+
+Adding a second dataset of co2 observations (just a subset)
+```{r}
+co2 <- readr::read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/co2.csv")
+```
+```{r}
+head(co2)
+summary(co2)
+```
+
+joining c02 data to gapminder data   
+first select only 2007 data from gapminder
+```{r}
+gap_2007 <- gapminder %>% 
+  filter(year == 2007) 
+```
+
+#left_join
+
+```{r}
+left_join(gap_2007, co2, by = "country")
+```
+
+#right_join
+```{r}
+right_join(gap_2007, co2, by = "country")
+```
+
+##Tidyr
+
+
+```{r}
+gap_wide <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder_wide.csv")
+```
+
+inserting - means you wont use that column (exclude)
+
+```{r}
+gap_wide %>%
+  gather(observation, observ_value, -continent, -country)
+```
+
+# to separate the year from the observation to tidy up the dataset  
+also can convert the year column from a character to an integer
+
+```{r}
+gap_wide %>%
+  gather(observation, observ_value, -continent, -country) %>%
+  separate(observation, into = c("obs_type", "year"), sep = "_", convert = TRUE)
+```
+create a new variable of this dataset
+```{r}
+gap_better <- gap_wide %>%
+  gather(observation, observ_value, -continent, -country) %>%
+  separate(observation, into = c("obs_type", "year"), sep = "_", convert = TRUE)
+```
+
+
+
+```{r}
+unique(gap_better$obs_type)
+```
+
+```{r}
+gap_better %>%
+  spread(obs_type, observ_value)
+```
+
+
+
+
+
+
